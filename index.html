@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PF-2026-11 · Unity 클라이언트 포트폴리오 · 권영진</title>
+<meta name="description" content="Unity / C# 게임 클라이언트 개발자 권영진의 포트폴리오. 프로젝트 4개를 정의서 형식으로 정리했습니다.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  :root {
+    --ink: #171719;
+    --ink-2: #4a4d55;
+    --muted: #80848d;
+    --line: #e3e5e9;
+    --line-strong: #171719;
+    --bg: #ffffff;
+    --bg-2: #f6f7f9;
+    --accent: #003399;
+    --accent-soft: #eef2fb;
+    --mark: #fff3b0;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: Pretendard, "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 14px; line-height: 1.7; word-break: keep-all; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  img { max-width: 100%; display: block; }
+  code { font-family: var(--mono); font-size: .85em; background: var(--bg-2); padding: .05em .35em; border-radius: 3px; }
+  .mono { font-family: var(--mono); }
+  .ref { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+  .ref + .ref { margin-left: 6px; }
+  mark { background: var(--mark); color: inherit; padding: 0 .15em; }
+  /* top bar */
+  .topbar { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .topbar .in { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 24px; gap: 16px; }
+  .brand b { display: block; font-size: 14px; }
+  .brand span { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .topbar select { font: inherit; font-size: 13px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); max-width: 46vw; }
+  /* layout */
+  .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); max-width: 1240px; margin: 0 auto; }
+  .toc { position: sticky; top: 56px; align-self: start; height: calc(100vh - 56px); overflow-y: auto; padding: 28px 16px 40px 24px; border-right: 1px solid var(--line); font-size: 13px; }
+  .toc .grp { font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; margin: 18px 0 6px; }
+  .toc .grp:first-child { margin-top: 0; }
+  .toc a { display: flex; gap: 8px; color: var(--ink-2); padding: 3px 6px; border-radius: 4px; }
+  .toc a:hover { background: var(--bg-2); text-decoration: none; }
+  .toc a.on { color: var(--accent); font-weight: 600; background: var(--accent-soft); }
+  .toc a .n { font-family: var(--mono); font-size: 11px; width: 16px; color: var(--muted); flex: none; padding-top: 1px; }
+  .toc a.sub { padding-left: 28px; font-size: 12.5px; }
+  .toc .cta { margin-top: 20px; display: block; font-weight: 600; color: var(--accent); padding: 3px 6px; }
+  main { padding: 44px 48px 80px; min-width: 0; }
+  /* cover */
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--accent); }
+  h1 { font-size: 38px; line-height: 1.3; margin: 10px 0 14px; letter-spacing: -.02em; }
+  .lead { color: var(--ink-2); font-size: 15px; margin: 0 0 26px; max-width: 760px; }
+  .meta { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 2px solid var(--line-strong); border-bottom: 1px solid var(--line); }
+  .meta div { padding: 12px 14px; border-right: 1px solid var(--line); }
+  .meta div:last-child { border-right: 0; }
+  .meta small { display: block; font-size: 11px; color: var(--muted); }
+  .meta b { font-weight: 600; font-size: 13px; }
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-right: 6px; vertical-align: 1px; }
+  /* part banner */
+  .part { display: grid; grid-template-columns: 110px 1fr; background: var(--ink); color: #fff; margin: 56px 0 36px; }
+  .part .num { padding: 18px 22px; border-right: 1px solid #3a3a3f; }
+  .part .num small { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: #a0a3ab; }
+  .part .num b { font-size: 38px; font-weight: 700; line-height: 1.2; }
+  .part .txt { padding: 22px 26px; align-self: center; }
+  .part .txt h2 { margin: 0 0 4px; font-size: 20px; }
+  .part .txt p { margin: 0; color: #c4c6cc; font-size: 13px; }
+  /* sections */
+  section.s { margin: 0 0 54px; }
+  .s-h { display: flex; align-items: baseline; gap: 12px; border-bottom: 2px solid var(--line-strong); padding-bottom: 8px; margin-bottom: 18px; }
+  .s-h .n { font-family: var(--mono); font-size: 22px; font-weight: 600; }
+  .s-h h2 { margin: 0; font-size: 22px; letter-spacing: -.01em; }
+  .sub-h { display: flex; gap: 10px; align-items: baseline; margin: 28px 0 12px; }
+  .sub-h .n { font-family: var(--mono); font-size: 13px; color: var(--accent); font-weight: 600; }
+  .sub-h h3 { margin: 0; font-size: 16px; }
+  p.intro { color: var(--ink-2); margin: 0 0 16px; }
+  /* tables */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; font-weight: 600; font-size: 12px; color: var(--muted); background: var(--bg-2); border-top: 1px solid var(--line-strong); }
+  th, td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.k { font-weight: 600; white-space: nowrap; }
+  td .note { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  td.no { width: 40px; }
+  table.kv td:first-child { width: 120px; font-weight: 600; background: var(--bg-2); }
+  /* three failure points */
+  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line-strong); }
+  .three > div { padding: 16px 16px 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .three > div:last-child { border-right: 0; }
+  .three h4 { margin: 0 0 4px; font-size: 14px; }
+  .three .bad { color: var(--muted); font-size: 12.5px; margin: 0 0 10px; }
+  .three .fix { margin: 0 0 8px; font-size: 13px; }
+  /* project map */
+  .map-grp { display: grid; grid-template-columns: 150px 1fr; border-top: 1px solid var(--line); }
+  .map-grp:last-child { border-bottom: 1px solid var(--line); }
+  .map-grp .lab { padding: 14px 12px; background: var(--bg-2); font-weight: 600; font-size: 13px; }
+  .map-grp .lab small { display: block; font-weight: 400; color: var(--muted); font-size: 11.5px; }
+  .map-cards { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .card { padding: 14px 16px; border-left: 1px solid var(--line); }
+  .card .top { display: flex; justify-content: space-between; align-items: center; }
+  .card .id { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .status { font-size: 10.5px; font-weight: 600; color: var(--accent); }
+  .card h4 { margin: 4px 0 2px; font-size: 15px; }
+  .card p { margin: 0 0 6px; color: var(--ink-2); font-size: 12.5px; }
+  .card .links { font-size: 12px; display: flex; gap: 12px; flex-wrap: wrap; }
+  /* project definition */
+  .prj { margin: 0 0 64px; }
+  .prj-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; border-bottom: 2px solid var(--line-strong); padding-bottom: 8px; margin-bottom: 14px; }
+  .prj-h .id { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+  .prj-h h3 { margin: 0; font-size: 21px; }
+  .prj-h .links { font-family: var(--mono); font-size: 11.5px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .prj-h .status { margin-left: auto; }
+  .prj-meta { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); margin: 14px 0 22px; }
+  .prj-meta div { padding: 10px 12px; border-right: 1px solid var(--line); }
+  .prj-meta div:last-child { border-right: 0; }
+  .prj-meta small { display: block; font-size: 11px; color: var(--muted); }
+  .prj-meta b { font-weight: 600; font-size: 12.5px; }
+  .def { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 22px; align-items: start; margin-bottom: 18px; }
+  .fig-cap { display: flex; justify-content: space-between; gap: 10px; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .fig { position: relative; border: 1px solid var(--line); background: #fff; cursor: zoom-in; }
+  .fig img { width: 100%; }
+  .mk { position: absolute; transform: translate(-50%, -50%); width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; box-shadow: 0 0 0 2px #fff; pointer-events: none; }
+  .def table td.no .b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10.5px; font-weight: 700; }
+  .def table td.no .dash { color: var(--muted); padding-left: 5px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 18px 0; }
+  .list-h { font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--line-strong); padding-bottom: 6px; margin-bottom: 4px; }
+  .list div { padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .list b { margin-right: 6px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line); margin: 18px 0 8px; }
+  .kpi { padding: 12px 14px; border-right: 1px solid var(--line); }
+  .kpi:last-child { border-right: 0; }
+  .kpi b { display: block; font-size: 22px; letter-spacing: -.02em; }
+  .kpi span { font-size: 12px; color: var(--ink-2); }
+  .shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; }
+  .shot { margin: 0; cursor: zoom-in; }
+  .shot .fr { border: 1px solid var(--line); background: var(--bg-2); aspect-ratio: 4 / 3; overflow: hidden; }
+  .shot img { width: 100%; height: 100%; object-fit: contain; }
+  .shot figcaption { font-size: 11.5px; color: var(--ink-2); margin-top: 4px; }
+  .feat { border-top: 1px solid var(--line); padding: 22px 0 6px; }
+  .feat-h { font-size: 17px; margin: 0 0 14px; display: inline-block; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
+  .pics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: end; margin-bottom: 12px; }
+  .pics.one { grid-template-columns: minmax(0, 720px); justify-content: center; }
+  .pics.three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pics.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .pic { margin: 0; cursor: zoom-in; }
+  .pic img { width: 100%; max-height: 360px; object-fit: contain; border: 1px solid var(--line); background: #fff; }
+  .pic figcaption { text-align: center; font-size: 12.5px; color: var(--ink-2); margin-top: 6px; }
+  .pts { margin: 6px 0 0; padding-left: 18px; }
+  .pts li { margin: 6px 0; font-size: 14px; line-height: 1.75; }
+  .pts b { color: var(--ink); font-weight: 700; }
+  .ov { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; align-items: start; margin: 4px 0 22px; }
+  .cover { background: #0d0f14; border: 1px solid var(--line); cursor: zoom-in; }
+  .cover img { width: 100%; height: 260px; object-fit: contain; }
+  .ov-t { border-top: 2px solid var(--line-strong); }
+  .ov-t th { width: 92px; background: none; border-top: 0; color: var(--ink-2); font-size: 13px; font-weight: 600; }
+  .ov-t td { font-size: 13.5px; }
+  .ov-t td b { display: inline-block; min-width: 0; margin-right: 6px; color: var(--accent); font-weight: 600; }
+  /* process */
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line-strong); }
+  .flow > div { padding: 12px 12px 14px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); position: relative; }
+  .flow > div:last-child { border-right: 0; }
+  .flow .step { font-family: var(--mono); font-size: 10.5px; color: var(--accent); }
+  .flow b { display: block; font-size: 13.5px; margin: 2px 0 4px; }
+  .flow p { margin: 0; font-size: 12.5px; color: var(--ink-2); }
+  footer { border-top: 2px solid var(--line-strong); padding-top: 18px; margin-top: 30px; font-size: 13px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  /* lightbox */
+  .lb { position: fixed; inset: 0; z-index: 50; background: rgba(15,15,18,.9); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 10px; padding: 24px; }
+  .lb.open { display: flex; }
+  .lb img { max-width: min(1200px, 100%); max-height: calc(100vh - 100px); object-fit: contain; background: #fff; }
+  .lb p { color: #e6e7ea; margin: 0; font-size: 13px; }
+  .lb button { position: absolute; top: 12px; right: 18px; background: none; border: 0; color: #fff; font-size: 30px; cursor: pointer; }
+  @media (min-width: 1024px) { .topbar select { display: none; } }
+  @media (max-width: 1023px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { display: none; }
+    main { padding: 32px 24px 64px; }
+  }
+  @media (max-width: 760px) {
+    h1 { font-size: 27px; }
+    .meta, .prj-meta, .kpis { grid-template-columns: 1fr 1fr; }
+    .meta div:nth-child(2n), .prj-meta div:nth-child(2n), .kpi:nth-child(2n) { border-right: 0; }
+    .meta div, .prj-meta div, .kpi { border-bottom: 1px solid var(--line); }
+    .three, .two, .def, .pics, .pics.three-col, .ov { grid-template-columns: 1fr; }
+    .cover img { height: 220px; }
+    .pics.four { grid-template-columns: 1fr 1fr; }
+    td.k { white-space: normal; overflow-wrap: anywhere; width: 30%; }
+    th, td { padding: 8px 8px; }
+    .three > div { border-right: 0; }
+    .map-grp { grid-template-columns: 1fr; }
+    .map-cards { grid-template-columns: 1fr; }
+    .card { border-left: 0; border-top: 1px solid var(--line); }
+    .flow { grid-template-columns: 1fr; }
+    .flow > div { border-right: 0; }
+    .part { grid-template-columns: 80px 1fr; }
+    main { padding: 26px 16px 56px; }
+    .topbar .in { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="in">
+    <div class="brand"><b>권영진 포트폴리오</b><span>PF-2026-11 · v1.0</span></div>
+    <select id="jump" aria-label="목차 이동">
+      <option value="">목차 이동</option>
+      <option value="s0">0 문서 안내</option>
+      <option value="s1">1 배경과 목표</option>
+      <option value="s2">2 프로젝트 맵</option>
+      <option value="s3">3 프로젝트 정의서</option>
+      <option value="prj-01">· PRJ-01 Astro Commanders</option>
+      <option value="prj-02">· PRJ-02 Gravity Eater</option>
+      <option value="prj-03">· PRJ-03 Fix Our Time</option>
+      <option value="prj-04">· PRJ-04 Rune Dungeon</option>
+      <option value="s4">4 트러블슈팅 목록</option>
+      <option value="s5">5 협업 방식</option>
+      <option value="s6">6 기술 스택</option>
+      <option value="sa">A 이력</option>
+    </select>
+  </div>
+</header>
+<div class="layout">
+  <nav class="toc" aria-label="목차">
+    <div class="grp">PART 1 · 개요</div>
+    <a href="#s0"><span class="n">0</span>문서 안내</a>
+    <a href="#s1"><span class="n">1</span>배경과 목표</a>
+    <a href="#s2"><span class="n">2</span>프로젝트 맵</a>
+    <div class="grp">PART 2 · 프로젝트</div>
+    <a href="#s3"><span class="n">3</span>프로젝트 정의서</a>
+    <a class="sub" href="#prj-01">PRJ-01 Astro Commanders</a>
+    <a class="sub" href="#prj-02">PRJ-02 Gravity Eater</a>
+    <a class="sub" href="#prj-03">PRJ-03 Fix Our Time</a>
+    <a class="sub" href="#prj-04">PRJ-04 Rune Dungeon</a>
+    <div class="grp">PART 3 · 근거</div>
+    <a href="#s4"><span class="n">4</span>트러블슈팅 목록</a>
+    <a href="#s5"><span class="n">5</span>협업 방식</a>
+    <a href="#s6"><span class="n">6</span>기술 스택</a>
+    <a href="#sa"><span class="n">A</span>이력</a>
+    <a class="cta" href="https://github.com/Dokkaeb" target="_blank" rel="noopener">GitHub →</a>
+    <a class="cta" style="margin-top:2px" href="https://trew202.tistory.com/" target="_blank" rel="noopener">개발 블로그 →</a>
+  </nav>
+  <main>
+    <!-- COVER -->
+    <div class="eyebrow">UNITY CLIENT PORTFOLIO · 유니티 클라이언트 포트폴리오</div>
+    <h1>구조를 먼저 설계하고,<br>성능을 고려해 구현합니다</h1>
+    <p class="lead">Unity 프로젝트 4개를 정의서 형식으로 정리했습니다.</p>
+    <div class="meta">
+      <div><small>문서번호 · 버전</small><b>PF-2026-11 · v1.0</b></div>
+      <div><small>작성자</small><b>권영진 · Unity 클라이언트 개발자</b></div>
+      <div><small>독자</small><b>OO게임즈 클라이언트팀 · 채용 심사자</b></div>
+      <div><small>상태 · 작성일</small><b><span class="dot"></span>검토 요청 · 2026-11-01</b></div>
+    </div>
+    <!-- PART 1 -->
+    <div class="part"><div class="num"><small>PART</small><b>1</b></div><div class="txt"><h2>개요</h2><p>이 문서를 어떻게 읽는지, 공고의 요구와 제 경험이 어디서 맞닿는지. 0 문서 안내 · 1 배경과 목표 · 2 프로젝트 맵</p></div></div>
+    <section class="s" id="s0">
+      <div class="s-h"><span class="n">0</span><h2>문서 안내</h2></div>
+      <table class="kv">
+        <tr><td>목적</td><td>Unity / C#으로 게임 클라이언트를 설계·구현하고 출시까지 해 본 경험을, 심사자가 10분 안에 확인할 수 있게 정리합니다.</td></tr>
+        <tr><td>읽는 순서</td><td>3분: <a href="#s1">1 배경과 목표</a> → <a href="#prj-01">PRJ-01</a>. 10분: <a href="#s3">3장 전체</a> + <a href="#s4">4 트러블슈팅</a>.</td></tr>
+        <tr><td>표기 규칙</td><td><span class="ref">PRJ</span> 프로젝트 · <span class="ref">TS</span> 트러블슈팅.</td></tr>
+        <tr><td>수치 기준</td><td>프로젝트 발표 자료(PDF)와 개발 블로그에 기록한 값만 사용했습니다. 근거 없는 수치는 싣지 않았습니다.</td></tr>
+        <tr><td>이미지</td><td>모든 그림은 프로젝트 발표 자료(PDF)에서 가져왔습니다.</td></tr>
+      </table>
+    </section>
+    <section class="s" id="s1">
+      <div class="s-h"><span class="n">1</span><h2>배경과 목표</h2></div>
+      <p class="intro">공고가 찾는 것(Unity 클라이언트 개발 · UI와 인게임 시스템 · 기획 협업 · 성능 최적화)은 제가 4개 프로젝트에서 반복해 온 일입니다. 특히 팀 프로젝트 하나는 구글 플레이 스토어에 출시했습니다.</p>
+      <div class="sub-h"><span class="n">1.1</span><h3>클라이언트 개발이 흔들리는 세 지점과 제 대응</h3></div>
+      <div class="three">
+        <div><h4>동기화가 네트워크를 잡아먹는다</h4><p class="bad">오브젝트 수만큼 RPC, 늦게 온 유저에게 쌓인 버퍼</p><p class="fix">보낼 데이터 자체를 줄인다 — 시드 하나, 점수 하나, 배열 한 번</p><a class="ref" href="#prj-02">PRJ-02</a></div>
+        <div><h4>UI가 늘수록 순서와 상태가 꼬인다</h4><p class="bad">팝업이 가려지고, 데이터가 바뀌어도 화면은 옛 값</p><p class="fix">구조로 강제한다 — BaseUI · Stack · 레이어 컨테이너 · 옵저버</p><a class="ref" href="#prj-01">PRJ-01</a></div>
+        <div><h4>기획 변경이 코드 수정이 된다</h4><p class="bad">수치 하나 바꾸는 데 개발자 손을 거쳐 2~3일</p><p class="fix">데이터를 분리한다 — ScriptableObject · CSV · 인스펙터 노출</p><a class="ref" href="#prj-01">PRJ-01</a><a class="ref" href="#prj-03">PRJ-03</a></div>
+      </div>
+      <div class="sub-h"><span class="n">1.2</span><h3>요건 대응표</h3></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th style="width:24%">공고 요건</th><th>근거</th><th style="width:14%">참조</th></tr></thead>
+        <tbody>
+          <tr><td class="k">Unity 모바일 / PC 클라이언트 개발</td><td>모바일(Android), PC Web·Windows 등 플랫폼이 다른 4개 프로젝트를 Unity 6 / C#으로 개발</td><td><a class="ref" href="#prj-01">PRJ-01</a><a class="ref" href="#prj-02">02</a><a class="ref" href="#prj-03">03</a><a class="ref" href="#prj-04">04</a></td></tr>
+          <tr><td class="k">게임 UI · 인게임 시스템 구현</td><td>인/아웃게임 UI 전담(BaseUI + Stack UIManager), 플레이어 FSM · 데미지 · 세이브 · 아이템 · 함정</td><td><a class="ref" href="#prj-01">PRJ-01</a><a class="ref" href="#prj-03">PRJ-03</a></td></tr>
+          <tr><td class="k">기획 · 아트 협업</td><td>기획자가 직접 수치를 고치도록 SO · CSV · 인스펙터로 분리 → 수치 조정 <b>2~3일 → 하루 이내</b>. 기획 7명 · 6명 팀과 협업</td><td><a class="ref" href="#s5">5장</a></td></tr>
+          <tr><td class="k">성능 최적화</td><td>시드 동기화로 초기 로딩 대역폭 <b>90%↓</b>, 오브젝트 풀링, 배치 RPC, <code>[OnChangedRender]</code> 이벤트 갱신</td><td><a class="ref" href="#prj-02">PRJ-02</a><a class="ref" href="#prj-01">PRJ-01</a></td></tr>
+          <tr><td class="k">Unity / C# 경력 2년 이상</td><td>실무 경력은 없습니다. 2025.09부터 경일 게임 아카데미 과정에서 프로젝트 4개(그중 1개 출시)를 진행했고, 경력 요건은 이 산출물로 설명합니다.</td><td><a class="ref" href="#sa">A 이력</a></td></tr>
+          <tr><td class="k">객체지향 · 디자인 패턴</td><td>State(<code>IState&lt;T&gt;</code>), MVP, Observer, Singleton, <code>IDamageable</code> · <code>IInteractable</code> 인터페이스</td><td><a class="ref" href="#prj-03">PRJ-03</a><a class="ref" href="#prj-04">PRJ-04</a></td></tr>
+          <tr><td class="k">Git 버전 관리</td><td>Git Flow · 커밋 컨벤션 · Git Issues 태스크 관리로 개발 5명 · 4명 팀 협업</td><td><a class="ref" href="#s5">5장</a></td></tr>
+          <tr><td class="k">출시 · 라이브 서비스 (우대)</td><td>프로토타입 → MVP → CBT → OBT → <b>Google Play 스토어 출시</b></td><td><a class="ref" href="#prj-01">PRJ-01</a></td></tr>
+          <tr><td class="k">서버 연동 (우대)</td><td>Photon PUN2 · Fusion 실시간 동기화, Firebase Realtime DB · Firestore 연동, TaskCompletionSource로 초기화 시점 통일</td><td><a class="ref" href="#prj-02">PRJ-02</a><a class="ref" href="#prj-01">PRJ-01</a></td></tr>
+          <tr><td class="k">셰이더 · 애니메이션 · 물리 (우대)</td><td>Shader Graph 블랙홀 · 아웃라인 직접 제작, DOTween 시퀀스 연출, PhysicsMaterial2D · BoxCast</td><td><a class="ref" href="#prj-03">PRJ-03</a><a class="ref" href="#prj-02">PRJ-02</a></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <section class="s" id="s2">
+      <div class="s-h"><span class="n">2</span><h2>프로젝트 맵</h2></div>
+      <p class="intro">카드의 링크는 실제 결과물로, <b>정의서 →</b> 는 3장으로 이동합니다.</p>
+      <div class="map-grp">
+        <div class="lab">팀 프로젝트<small>기획자와 협업</small></div>
+        <div class="map-cards">
+          <div class="card"><div class="top"><span class="id">PRJ-01</span><span class="status">● 출시</span></div><h4>Astro Commanders</h4><p>SF 실시간 전략 증강 PVP 모바일 · 개발 5 / 기획 7 · UI 전담</p><div class="links"><a href="https://play.google.com/store/apps/details?id=com.develrocket.ProjectAstro&amp;hl=ko" target="_blank" rel="noopener">Google Play ↗</a><a href="https://github.com/done778/Project_Astro" target="_blank" rel="noopener">GitHub ↗</a><a href="#prj-01">정의서 →</a></div></div>
+          <div class="card"><div class="top"><span class="id">PRJ-03</span><span class="status">● 완료</span></div><h4>Fix Our Time</h4><p>스팀펑크 2D 클라이밍 플랫포머 · 개발 4 / 기획 6 · 플레이어 · 시스템</p><div class="links"><a href="https://youtu.be/8mHlGQNQNmQ" target="_blank" rel="noopener">PV 영상 ↗</a><a href="https://github.com/GodKong2431/FixOurTime" target="_blank" rel="noopener">GitHub ↗</a><a href="#prj-03">정의서 →</a></div></div>
+        </div>
+      </div>
+      <div class="map-grp">
+        <div class="lab">개인 프로젝트<small>1인 개발</small></div>
+        <div class="map-cards">
+          <div class="card"><div class="top"><span class="id">PRJ-02</span><span class="status">● 완료</span></div><h4>Gravity Eater</h4><p>2D .io 실시간 멀티플레이 · Photon PUN2 · Firebase · 3주</p><div class="links"><a href="https://github.com/Dokkaeb/Gravity_Eater" target="_blank" rel="noopener">GitHub ↗</a><a href="#prj-02">정의서 →</a></div></div>
+          <div class="card"><div class="top"><span class="id">PRJ-04</span><span class="status">● 완료</span></div><h4>Rune Dungeon</h4><p>2D 퍼즐 탈출 · Behavior Tree AI · 1주</p><div class="links"><a href="https://youtu.be/8KDLkqQ1-s0" target="_blank" rel="noopener">시연 영상 ↗</a><a href="https://github.com/Dokkaeb/RuneDungeon" target="_blank" rel="noopener">GitHub ↗</a><a href="#prj-04">정의서 →</a></div></div>
+        </div>
+      </div>
+    </section>
+    <!-- PART 2 -->
+    <div class="part"><div class="num"><small>PART</small><b>2</b></div><div class="txt"><h2>프로젝트 정의서</h2><p>프로젝트 4개를 대표 화면, 기능별 그림과 설명으로. 3 프로젝트 정의서</p></div></div>
+    <section class="s" id="s3">
+      <div class="s-h"><span class="n">3</span><h2>프로젝트 정의서</h2></div>
+      <p class="intro">프로젝트마다 대표 화면과 개요를 나란히 보여 주고, 이어서 주요 기능을 정리했습니다. 이미지를 누르면 크게 볼 수 있습니다.</p>
+
+      <!-- PRJ-01 -->
+      <article class="prj" id="prj-01">
+        <div class="prj-h"><span class="id">PRJ-01</span><h3>Astro Commanders</h3>
+          <span class="links"><a href="https://play.google.com/store/apps/details?id=com.develrocket.ProjectAstro&amp;hl=ko" target="_blank" rel="noopener">Google Play ↗</a><a href="https://github.com/done778/Project_Astro" target="_blank" rel="noopener">GitHub ↗</a><a href="https://trew202.tistory.com/106" target="_blank" rel="noopener">개발기 ↗</a></span>
+          <span class="status">● Google Play 출시</span></div>
+        <div class="ov">
+          <div class="cover" data-cap="Astro Commanders 타이틀 · 인게임"><img src="images/astro/cover.jpg" alt="Astro Commanders 타이틀과 인게임 화면"></div>
+          <table class="ov-t">
+            <tr><th>개발 인원</th><td>개발 5명 · 기획 7명</td></tr>
+            <tr><th>게임 장르</th><td>PVP · 증강 · 전략 · 디펜스 · 모바일</td></tr>
+            <tr><th>개발 기간</th><td>2026.02.09 ~ 2026.04.10 (약 2개월)</td></tr>
+            <tr><th>기술 스택</th><td>Unity 6 / Photon Fusion / Firebase</td></tr>
+            <tr><th>담당 업무</th><td><b>UI·UX 설계</b> 인/아웃게임 UI·UX 전반<br><b>실시간 커뮤니케이션</b> 매크로 채팅 &amp; 핑<br><b>연출 · 공용 UI</b> DOTween 연출, 기본 UI 커스텀<br><b>전체 UI 관리</b> BaseUI · Stack 기반 UIManager</td></tr>
+          </table>
+        </div>
+        <div class="feat">
+          <h4 class="feat-h">주요 기능</h4>
+          <ul class="pts">
+            <li><b>DB + CSV 데이터 관리</b> — 정적 데이터(CSV)와 동적 데이터(Firestore)를 결합해 UI에 즉시 반영. async/await로 <b>UI 프리징 방지</b>, 트랜잭션 플래그로 중복 요청 차단</li>
+            <li><b>디자인 패턴</b> — <b>MVP</b>로 모델·뷰가 바뀌어도 구조 유지, <b>옵저버</b>로 골드·승리 수·영웅 데이터 변경 시 UI 자동 갱신, 주요 매니저는 <b>싱글톤</b></li>
+            <li><b>UIManager · BaseUI</b> — 공통 로직을 BaseUI로 묶어 <b>코드 중복 제거</b>, <b>Stack</b>으로 팝업 순서·뒤로가기 보장, Popup·TopLayer 컨테이너로 순서 꼬임 방지</li>
+            <li><b>매크로 &amp; 핑</b> — 매크로는 PlayerPrefs 로컬 저장으로 <b>DB 부담 감소</b>, SO로 기획자가 직접 추가. 차단은 수신 측 필터링, 핑은 <b>좌표 정규화</b>로 해상도와 무관하게 같은 위치</li>
+            <li><b>HP바</b> — <b>오브젝트 풀링</b>으로 GC·프레임 드랍 억제, <code>[OnChangedRender]</code> 이벤트 기반 갱신으로 트래픽 절감, 팀 색상·영웅 마크 표시</li>
+            <li><b>DOTween 연출 · 공용 UI</b> — <b>시퀀스</b>로 묶어 동시 재생·콜백 관리, BaseUI와 결합해 필요할 때 오버라이드. 토글·스와이프·확인 팝업을 팀 공용 UI로 제공</li>
+          </ul>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><b>출시</b><span>Google Play 스토어</span></div>
+          <div class="kpi"><b>20+</b><span>BaseUI를 상속한 UI 클래스</span></div>
+          <div class="kpi"><b>12명</b><span>개발 5 · 기획 7 협업</span></div>
+          <div class="kpi"><b>283</b><span>담당 커밋</span></div>
+        </div>
+      </article>
+
+      <!-- PRJ-02 -->
+      <article class="prj" id="prj-02">
+        <div class="prj-h"><span class="id">PRJ-02</span><h3>Gravity Eater</h3>
+          <span class="links"><a href="https://github.com/Dokkaeb/Gravity_Eater" target="_blank" rel="noopener">GitHub ↗</a><a href="https://trew202.tistory.com/105" target="_blank" rel="noopener">개발기 ↗</a></span>
+          <span class="status">● 1인 개발 완료</span></div>
+        <div class="ov">
+          <div class="cover" data-cap="Gravity Eater 로비 · Top 10 리더보드"><img src="images/gravity/cover.jpg" alt="Gravity Eater 로비와 리더보드"></div>
+          <table class="ov-t">
+            <tr><th>개발 인원</th><td>1명</td></tr>
+            <tr><th>게임 장르</th><td>2D · 캐주얼 · 실시간 멀티플레이</td></tr>
+            <tr><th>개발 기간</th><td>2026.01.12 ~ 2026.01.30 (약 3주)</td></tr>
+            <tr><th>기술 스택</th><td>Unity 6 / Photon PUN2 / Firebase</td></tr>
+            <tr><th>담당 업무</th><td><b>플레이어</b> 상태 패턴으로 각 상태 분리<br><b>맵</b> 시드 기반 맵 생성, 오브젝트 풀링<br><b>네트워크</b> Photon PUN2와 Firebase<br><b>이펙트</b> 셰이더 그래프, DOTween</td></tr>
+          </table>
+        </div>
+        <div class="feat">
+          <h4 class="feat-h">주요 기능</h4>
+          <ul class="pts">
+            <li><b>시드 기반 맵 동기화</b> — 1,000개 이상의 오브젝트 대신 <b>난수 시드 하나를 공유</b>해 각자 생성, <b>초기 로딩 대역폭 90% 이상 절감</b>. 중도 참여자를 위해 시드는 커스텀 프로퍼티에 저장</li>
+            <li><b>마스터 클라이언트 위임</b> — 먹이·아이템·함정의 생성과 파괴를 마스터가 판정해 <b>중복 처리·복사 버그 차단</b>. 10명 실시간 접속 테스트 정상 동작</li>
+            <li><b>플레이어 · 점수 동기화</b> — 아이템 로직은 로컬, <b>비주얼만 RPC</b>. 점수는 <code>IPunObservable</code>로 보내고 <b>크기는 각자 계산</b>해 대역폭 절약</li>
+            <li><b>사망 전리품</b> — 점수의 50%를 10점 단위로 묶어 <b>배치 전송</b>, 네트워크 부하 감소</li>
+            <li><b>네트워크 초기화 · 리더보드</b> — Photon(콜백)과 Firebase(Task)를 <b>TaskCompletionSource</b>로 묶어 초기화 시점 통일. 리더보드는 MVP, 3초 타임아웃·최대 5회 재시도</li>
+            <li><b>스킨 · 외형 진화</b> — 스킨은 PlayerPrefs + AllBuffered RPC, 점수별 진화는 <b>DOTween</b> 연출, 블랙홀 머티리얼은 <b>Shader Graph</b>로 직접 제작</li>
+            <li><b>오브젝트 풀링</b> — 먹이·아이템 생성/삭제 비용을 줄여 <b>GC와 프레임 드랍 억제</b></li>
+          </ul>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><b>90%↓</b><span>초기 로딩 대역폭</span></div>
+          <div class="kpi"><b>1,000+</b><span>시드 하나로 동기화한 오브젝트</span></div>
+          <div class="kpi"><b>10명</b><span>실시간 접속 테스트</span></div>
+          <div class="kpi"><b>3주</b><span>1인으로 완성</span></div>
+        </div>
+      </article>
+
+      <!-- PRJ-03 -->
+      <article class="prj" id="prj-03">
+        <div class="prj-h"><span class="id">PRJ-03</span><h3>Fix Our Time</h3>
+          <span class="links"><a href="https://youtu.be/8mHlGQNQNmQ" target="_blank" rel="noopener">PV 영상 ↗</a><a href="https://github.com/GodKong2431/FixOurTime" target="_blank" rel="noopener">GitHub ↗</a><a href="https://trew202.tistory.com/99" target="_blank" rel="noopener">개발기 ↗</a></span>
+          <span class="status">● 팀 프로젝트 완료</span></div>
+        <div class="ov">
+          <div class="cover" data-cap="Fix Our Time 키 아트"><img src="images/fix/cover.jpg" alt="Fix Our Time 키 아트"></div>
+          <table class="ov-t">
+            <tr><th>개발 인원</th><td>개발 4명 · 기획 6명</td></tr>
+            <tr><th>게임 장르</th><td>2D · 플랫포머 · 클라이밍</td></tr>
+            <tr><th>개발 기간</th><td>2025.12.11 ~ 2026.01.02 (약 3주)</td></tr>
+            <tr><th>기술 스택</th><td>Unity 6 / PC</td></tr>
+            <tr><th>담당 업무</th><td><b>Player System</b> 상태 패턴 기반, 버프/디버프<br><b>Game Management</b> 싱글톤 매니저들<br><b>Data &amp; Save</b> JSON 기반 세이브<br><b>Visual &amp; UI</b> 셰이더 제작, 영상 연출, 전체 UI 연동</td></tr>
+          </table>
+        </div>
+        <div class="feat">
+          <h4 class="feat-h">주요 기능</h4>
+          <ul class="pts">
+            <li><b>FSM 플레이어 상태 관리</b> — 상태 패턴으로 10개 상태를 분리해 <b>기존 코드 수정 없이</b> 새 상태 추가. 제네릭 인터페이스로 <b>Enter · Execute · Exit 생명주기</b> 관리</li>
+            <li><b>인터페이스 기반 데미지</b> — 플레이어·보스·함정·아이템이 <code>IDamageable</code> 하나로 피격 처리, <b>피격 로직 분리</b>와 유지보수 비용 감소</li>
+            <li><b>JSON 세이브</b> — 위치·스테이지 등 여러 타입을 <b>계층 구조</b>로 저장, 기획이 바뀌어도 스키마에 필드만 추가</li>
+            <li><b>Shader Graph 이펙트</b> — 보스 스킬 <b>블랙홀</b>과 차지 · 함정 상태 <b>아웃라인</b>을 직접 제작</li>
+            <li><b>Init 씬 초기화</b> — 싱글톤 매니저와 인트로 영상을 Init 씬에서 한 번에 생성·초기화해 <b>씬 전환 참조 오류 방지</b></li>
+            <li><b>물리 · 지형 판정</b> — PhysicsMaterial2D 교체로 벽 튕김·마찰 처리, BoxCast로 모서리 판정 오류 수정</li>
+          </ul>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><b>10개</b><span>플레이어 상태</span></div>
+          <div class="kpi"><b>19개</b><span>인터페이스 전환 일괄 리팩토링 파일</span></div>
+          <div class="kpi"><b>8개</b><span>4개 스테이지 세이브 포인트</span></div>
+          <div class="kpi"><b>3주</b><span>기한 내 기획 기능 전부 구현</span></div>
+        </div>
+      </article>
+
+      <!-- PRJ-04 -->
+      <article class="prj" id="prj-04">
+        <div class="prj-h"><span class="id">PRJ-04</span><h3>Rune Dungeon</h3>
+          <span class="links"><a href="https://youtu.be/8KDLkqQ1-s0" target="_blank" rel="noopener">시연 영상 ↗</a><a href="https://github.com/Dokkaeb/RuneDungeon" target="_blank" rel="noopener">GitHub ↗</a><a href="https://trew202.tistory.com/107" target="_blank" rel="noopener">개발기 ↗</a></span>
+          <span class="status">● 1인 개발 완료</span></div>
+        <div class="ov">
+          <div class="cover" data-cap="Rune Dungeon 타이틀"><img src="images/rune/cover.jpg" alt="Rune Dungeon 타이틀 화면"></div>
+          <table class="ov-t">
+            <tr><th>개발 인원</th><td>1명</td></tr>
+            <tr><th>게임 장르</th><td>2D · 퍼즐 · 탈출</td></tr>
+            <tr><th>개발 기간</th><td>2025.11.21 ~ 2025.11.27 (약 1주)</td></tr>
+            <tr><th>기술 스택</th><td>Unity 6 / Unity Behavior</td></tr>
+            <tr><th>담당 업무</th><td><b>1인 개발</b> 기획 · 설계 · 구현 · 맵 배치 전체</td></tr>
+          </table>
+        </div>
+        <div class="feat">
+          <h4 class="feat-h">주요 기능</h4>
+          <ul class="pts">
+            <li><b>상태 패턴 플레이어</b> — Witch 클래스는 입력만 받고 행동은 각 상태가 담당, 상태 추가 시 <b>수정 범위 약 80% 감소</b></li>
+            <li><b>스프라이트 마스크 기믹</b> — 룬스톤 주변에서만 숨은 사물이 보이고, 인벤토리에서 끌어다 놓으면 SO 데이터로 월드에 소환</li>
+            <li><b>Behavior Tree 적 AI</b> — 탐지 · 추격 · 공격을 노드로 구성, 추격 때 Cinemachine 연출</li>
+            <li><b><code>IInteractable</code></b> — 워프 · 세이브 · 클리어 등 6종 오브젝트를 하나의 인터페이스로 묶어 <b>분기 100% 제거</b></li>
+            <li><b>이벤트 기반 HP바</b> — 매 프레임 확인 대신 HP가 바뀔 때만 갱신해 <b>호출 99% 감소</b></li>
+          </ul>
+        </div>
+      </article>
+    </section>
+    <!-- PART 3 -->
+    <div class="part"><div class="num"><small>PART</small><b>3</b></div><div class="txt"><h2>근거와 역량</h2><p>문제를 어떻게 풀었고, 어떻게 일하는지. 4 트러블슈팅 · 5 협업 방식 · 6 기술 스택 · A 이력</p></div></div>
+    <section class="s" id="s4">
+      <div class="s-h"><span class="n">4</span><h2>트러블슈팅 목록</h2></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th style="width:62px">ID</th><th style="width:64px">PRJ</th><th>문제</th><th>해결</th><th style="width:22%">결과</th></tr></thead>
+        <tbody>
+          <tr id="ts-01"><td class="ref">TS-01</td><td class="ref">01</td><td>UI가 늘면서 팝업 · 토스트가 서로 가려짐</td><td>Popups · TopLayer 컨테이너 구조 강제, 생성 시 <code>SetParent</code>로 뎁스 자동 정렬</td><td>수동 뎁스 조정 실수 차단</td></tr>
+          <tr id="ts-02"><td class="ref">TS-02</td><td class="ref">01</td><td>프로토타입에서 하드코딩한 수치를 나중에 갈아엎어야 함</td><td>MVP 패턴 적용, 모델(CSV · DB)과 뷰 분리</td><td>모델 · 뷰가 바뀌어도 구조 유지</td></tr>
+          <tr id="ts-03"><td class="ref">TS-03</td><td class="ref">01</td><td>기종마다 핑 위치가 조금씩 어긋남</td><td>절대 좌표 대신 0~1 비율 값 전송</td><td>해상도와 무관하게 같은 위치</td></tr>
+          <tr id="ts-04"><td class="ref">TS-04</td><td class="ref">02</td><td>모든 동기화를 AllBuffered로 처리해 늦게 온 유저 부담 증가</td><td>로컬 처리 가능한 것은 로컬로, 이펙트는 커스텀 프로퍼티, 진행 중엔 일반 RPC</td><td>버퍼 누적 제거</td></tr>
+          <tr id="ts-05"><td class="ref">TS-05</td><td class="ref">02</td><td>먹이가 보이는데 실제로는 없는 잔상</td><td>고유 ID + 마스터 전담. 먹으면 먼저 비활성화 → 마스터 확정 → 새 유저에게 먹힌 ID 전송</td><td>잔상 · 점수 복사 버그 방지</td></tr>
+          <tr id="ts-06"><td class="ref">TS-06</td><td class="ref">02</td><td>마스터가 나가면 아이템 · 함정이 더 이상 생성 안 됨</td><td><code>OnMasterClientSwitched</code>에서 새 마스터가 코루틴 재시작</td><td>호스트 이탈에도 게임 지속</td></tr>
+          <tr id="ts-07"><td class="ref">TS-07</td><td class="ref">02</td><td>1점짜리 전리품 수백 개로 네트워크 과부하</td><td>10점 단위로 묶어 배치 RPC 전송</td><td>과부하 대부분 해소</td></tr>
+          <tr id="ts-08"><td class="ref">TS-08</td><td class="ref">02</td><td>리더보드가 불러와질 때도, 안 될 때도 있음</td><td><code>TaskCompletionSource</code>로 Photon(콜백) · Firebase(Task) 초기화 시점 통일</td><td>리더보드 연결 안정화</td></tr>
+          <tr id="ts-09"><td class="ref">TS-09</td><td class="ref">03</td><td>마감 4일 전, 로드 시 Cinemachine 카메라가 위아래로 튐</td><td>구조 수정 대신 페이크 로딩 연출로 카메라 안정 시간 확보</td><td>유저에겐 의도된 로딩으로 인식</td></tr>
+          <tr id="ts-10"><td class="ref">TS-10</td><td class="ref">03</td><td>매니저끼리 직접 참조해 한 곳을 고치면 연쇄 오류</td><td>외부 호출을 UnityEvent로 바꿔 결합도 완화</td><td>DI 학습을 다음 과제로 정리</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <section class="s" id="s5">
+      <div class="s-h"><span class="n">5</span><h2>협업 방식</h2></div>
+      <p class="intro">팀 프로젝트 두 개(10명 · 12명)에서 같은 흐름으로 일했습니다. 기획자가 개발자를 기다리지 않게 만드는 것을 가장 중요하게 봤습니다.</p>
+      <div class="flow">
+        <div><span class="step">STEP 1</span><b>컨벤션 합의</b><p>코드 · 커밋 메시지 규칙, Git Flow 브랜치 전략을 먼저 정함</p></div>
+        <div><span class="step">STEP 2</span><b>Git Issues 태스크</b><p>기획자가 우선순위대로 이슈 등록 → 구현 후 양식에 맞춰 완료 처리</p></div>
+        <div><span class="step">STEP 3</span><b>데일리 스크럼</b><p>하루 2회. 노션으로 일정 · 기획 문서 · 개발 문서 관리</p></div>
+        <div><span class="step">STEP 4</span><b>기획자용 데이터</b><p>자주 바뀔 수치는 인스펙터 노출 · SO · CSV로 분리 → 조정 2~3일에서 하루 이내</p></div>
+        <div><span class="step">STEP 5</span><b>공용 코드</b><p>BaseUI · 토글 · 스와이프 · 확인 팝업처럼 팀원이 그대로 쓰는 공용 UI 제공</p></div>
+      </div>
+      <p class="intro" style="margin-top:14px">결정이 필요한 사안은 개인 판단으로 진행하지 않고 팀장을 거쳐 담당 기획자와 함께 정했습니다. 그 결과 기술적 오해 없이 요구사항 대부분을 구현했습니다.</p>
+    </section>
+    <section class="s" id="s6">
+      <div class="s-h"><span class="n">6</span><h2>기술 스택</h2></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th style="width:18%">분류</th><th>기술</th><th style="width:18%">사용 프로젝트</th></tr></thead>
+        <tbody>
+          <tr><td class="k">엔진 · 언어</td><td>Unity 6 (URP), C#, Input System, Cinemachine, Tilemap, Sprite Mask, Unity Behavior</td><td><span class="ref">01~04</span></td></tr>
+          <tr><td class="k">설계 · 패턴</td><td>State(FSM) · 제네릭 인터페이스, MVP, Observer, Singleton, ScriptableObject</td><td><span class="ref">01~04</span></td></tr>
+          <tr><td class="k">네트워크</td><td>Photon PUN2(RPC · IPunObservable · 커스텀 프로퍼티), Photon Fusion(<code>[Networked]</code> · <code>[OnChangedRender]</code>)</td><td><span class="ref">01</span><span class="ref">02</span></td></tr>
+          <tr><td class="k">백엔드 · 데이터</td><td>Firebase Realtime DB · Firestore, async/await, TaskCompletionSource, JSON, CSV, PlayerPrefs</td><td><span class="ref">01</span><span class="ref">02</span><span class="ref">03</span></td></tr>
+          <tr><td class="k">최적화</td><td>오브젝트 풀링, 시드 동기화, 배치 RPC, 이벤트 기반 UI 갱신</td><td><span class="ref">01</span><span class="ref">02</span></td></tr>
+          <tr><td class="k">UI · 연출</td><td>Unity UI, TextMeshPro, DOTween Sequence, Shader Graph</td><td><span class="ref">01</span><span class="ref">02</span><span class="ref">03</span></td></tr>
+          <tr><td class="k">협업</td><td>Git · GitHub, Git Issues, Notion</td><td><span class="ref">01</span><span class="ref">03</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <section class="s" id="sa">
+      <div class="s-h"><span class="n">A</span><h2>이력</h2></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th style="width:22%">기간</th><th>내용</th><th style="width:22%">비고</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">2026.02 – 2026.04</td><td class="k">기업 협약 팀 프로젝트 · (주)붐캣 스튜디오</td><td>Google Play 출시 <a class="ref" href="#prj-01">PRJ-01</a></td></tr>
+          <tr><td class="mono">2025.09 – 2026.04</td><td class="k">경일 게임 아카데미 · XR 기술을 활용한 게임 개발자 과정</td><td>수료</td></tr>
+          <tr><td class="mono">2022.11</td><td class="k">경북 게임인 해커톤 · 퍼즐 탈출 게임</td><td>우수상</td></tr>
+          <tr><td class="mono">2021.06 – 2021.07</td><td class="k">대학 링큐 연계 기업 실습 · (주)메타넷엠플랫폼</td><td>QA 교육</td></tr>
+          <tr><td class="mono">2015.03 – 2022.02</td><td class="k">대구가톨릭대학교 컴퓨터소프트웨어학부</td><td>졸업</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <footer>
+      <span><b>권영진</b> · Unity 클라이언트 개발자</span>
+      <a href="mailto:yj4705@gmail.com">yj4705@gmail.com</a>
+      <a href="https://github.com/Dokkaeb" target="_blank" rel="noopener">github.com/Dokkaeb</a>
+      <a href="https://trew202.tistory.com/" target="_blank" rel="noopener">trew202.tistory.com</a>
+      <span class="mono" style="margin-left:auto;color:var(--muted);font-size:11px">PF-2026-11 · v1.0</span>
+    </footer>
+  </main>
+</div>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="이미지 크게 보기"><button aria-label="닫기">×</button><img alt=""><p></p></div>
+<script>
+  // 모바일 목차 이동
+  document.getElementById('jump').addEventListener('change', function () {
+    if (this.value) location.hash = this.value;
+    this.value = '';
+  });
+  // 현재 읽는 섹션을 왼쪽 목차에 표시
+  (function () {
+    var links = [].slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+    var targets = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    function update() {
+      var y = window.scrollY + 120, cur = -1;
+      targets.forEach(function (t, i) { if (t && t.offsetTop <= y) cur = i; });
+      links.forEach(function (a, i) { a.classList.toggle('on', i === cur); });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+  // 그림 · 스크린샷 크게 보기
+  (function () {
+    var lb = document.getElementById('lb'), img = lb.querySelector('img'), cap = lb.querySelector('p');
+    function open(src, alt, text) { img.src = src; img.alt = alt; cap.textContent = text; lb.classList.add('open'); }
+    function close() { lb.classList.remove('open'); img.removeAttribute('src'); }
+    document.querySelectorAll('.fig, .cover').forEach(function (f) {
+      f.addEventListener('click', function () { var i = f.querySelector('img'); open(i.src, i.alt, f.dataset.cap || i.alt); });
+    });
+    document.querySelectorAll('.shot, .pic').forEach(function (s) {
+      s.addEventListener('click', function () { var i = s.querySelector('img'); open(i.src, i.alt, s.querySelector('figcaption').textContent); });
+    });
+    lb.addEventListener('click', function (e) { if (e.target !== img) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  })();
+</script>
+</body>
+</html>
