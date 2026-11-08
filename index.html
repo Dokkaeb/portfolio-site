@@ -65,6 +65,11 @@
   .meta div:last-child { border-right: 0; }
   .meta small { display: block; font-size: 11px; color: var(--muted); }
   .meta b { font-weight: 600; font-size: 13px; }
+  .profile-h { font-size: 12px; font-weight: 600; color: var(--ink-2); margin: 22px 0 6px; }
+  .meta.profile { grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); border-bottom: 0; }
+  .meta.profile div { border-bottom: 1px solid var(--line); }
+  .meta.profile div:nth-child(3n) { border-right: 0; }
+  .meta.profile a { color: inherit; }
   .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-right: 6px; vertical-align: 1px; }
   /* part banner */
   .part { display: grid; grid-template-columns: 110px 1fr; background: var(--ink); color: #fff; margin: 56px 0 36px; }
@@ -257,6 +262,15 @@
       <div><small>작성자</small><b>권영진 · Unity 클라이언트 개발자</b></div>
       <div><small>독자</small><b>트리노드 클라이언트팀 · 채용 심사자</b></div>
       <div><small>상태 · 작성일</small><b><span class="dot"></span>검토 요청 · 2026-11-01</b></div>
+    </div>
+    <div class="profile-h">기본 사항</div>
+    <div class="meta profile">
+      <div><small>이름</small><b>권영진</b></div>
+      <div><small>생년월일</small><b>1996.10.30</b></div>
+      <div><small>전화번호</small><b><a href="tel:010-4457-4705">010-4457-4705</a></b></div>
+      <div><small>이메일</small><b><a href="mailto:yj4705@gmail.com">yj4705@gmail.com</a></b></div>
+      <div><small>주소</small><b>경기도 화성시 새솔동</b></div>
+      <div><small>병역</small><b>육군 병장 만기 전역</b></div>
     </div>
     <!-- PART 1 -->
     <div class="part"><div class="num"><small>PART</small><b>1</b></div><div class="txt"><h2>개요</h2><p>이 문서를 어떻게 읽는지, 공고의 요구와 제 경험이 어디서 맞닿는지. 0 문서 안내 · 1 배경과 목표 · 2 프로젝트 맵</p></div></div>
